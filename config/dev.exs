@@ -51,7 +51,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :celestial, Celestial.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
+  username: "andrewyang",
   password: "",
   database: "celestial_dev",
   hostname: "localhost",
