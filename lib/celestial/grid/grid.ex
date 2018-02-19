@@ -19,6 +19,21 @@ defmodule Celestial.Grid do
   """
   def list_grid_squares do
     Repo.all(Square)
+    |> List.foldl(%{}, fn(square, acc) ->
+      Map.merge(acc, %{{square.row, square.col} => square.hex_rgb})
+    end)
+    |> square_map_to_grid
+  end
+
+  defp square_map_to_grid(hex_rgb_map) do
+    for row <- 0..999 do
+      for col <- 0..999 do
+        case hex_rgb_map[{row, col}] do
+          nil -> "000000"
+          hex_rgb -> hex_rgb
+        end
+      end
+    end
   end
 
   @doc """
@@ -35,7 +50,12 @@ defmodule Celestial.Grid do
       ** (Ecto.NoResultsError)
 
   """
-  def get_square!(id), do: Repo.get!(Square, id)
+  def get_square(row, col) do
+    case Repo.get_by(Square, row: row, col: col) do
+      nil -> "000000"
+      square -> square
+    end
+  end
 
   @doc """
   Creates a square.
@@ -71,22 +91,6 @@ defmodule Celestial.Grid do
     square
     |> Square.changeset(attrs)
     |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Square.
-
-  ## Examples
-
-      iex> delete_square(square)
-      {:ok, %Square{}}
-
-      iex> delete_square(square)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_square(%Square{} = square) do
-    Repo.delete(square)
   end
 
   @doc """
