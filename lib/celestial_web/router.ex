@@ -19,8 +19,9 @@ defmodule CelestialWeb.Router do
     get "/", PageController, :index
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", CelestialWeb do
-  #   pipe_through :api
-  # end
+  scope "/grid", CelestialWeb.Grid do
+    pipe_through :api
+
+    resources "/changes", ChangeController
+  end
 end
