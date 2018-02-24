@@ -36,74 +36,17 @@ defmodule Celestial.Grid do
     end
   end
 
-  @doc """
-  Gets a single square.
+  def get_square_by_coords(row, col) do
+    Repo.get_by(Square, row: row, col: col)
+  end
 
-  Raises `Ecto.NoResultsError` if the Square does not exist.
-
-  ## Examples
-
-      iex> get_square!(123)
-      %Square{}
-
-      iex> get_square!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_square(row, col) do
-    case Repo.get_by(Square, row: row, col: col) do
-      nil -> "000000"
+  def create_or_update_square_by_coords(row, col, hex_rgb) do
+    case get_square_by_coords(row, col) do
+      nil -> %Square{row: row, col: col, hex_rgb: hex_rgb}
       square -> square
     end
-  end
-
-  @doc """
-  Creates a square.
-
-  ## Examples
-
-      iex> create_square(%{field: value})
-      {:ok, %Square{}}
-
-      iex> create_square(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_square(attrs \\ %{}) do
-    %Square{}
-    |> Square.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a square.
-
-  ## Examples
-
-      iex> update_square(square, %{field: new_value})
-      {:ok, %Square{}}
-
-      iex> update_square(square, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_square(%Square{} = square, attrs) do
-    square
-    |> Square.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking square changes.
-
-  ## Examples
-
-      iex> change_square(square)
-      %Ecto.Changeset{source: %Square{}}
-
-  """
-  def change_square(%Square{} = square) do
-    Square.changeset(square, %{})
+    |> Square.changeset(%{row: row, col: col, hex_rgb: hex_rgb})
+    |> Repo.insert_or_update
   end
 
   alias Celestial.Grid.Change
@@ -203,19 +146,6 @@ defmodule Celestial.Grid do
     Repo.delete(change)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking change changes.
-
-  ## Examples
-
-      iex> change_change(change)
-      %Ecto.Changeset{source: %Change{}}
-
-  """
-  def change_change(%Change{} = change) do
-    Change.changeset(change, %{})
-  end
-
   @memo_text_regex ~r/^(?<row>[0-9]{1,2})[,;](?<col>[0-9]{1,2})[,;]#?(?<hex_rgb>[0-9a-f]{6}$)/i
 
   def parse_memo_text(memo_text) do
@@ -230,7 +160,7 @@ defmodule Celestial.Grid do
   def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => "text", "memo_text" => memo_text}) do
     case parse_memo_text(memo_text) do
       {:ok, {row, col, hex_rgb}} ->
-        change_change(%{
+        Change.changeset(%{
           txn_hash: txn_hash,
           paging_token: paging_token,
           source_address: source_address,
@@ -238,21 +168,24 @@ defmodule Celestial.Grid do
           col: col,
           hex_rgb: hex_rgb
         })
+        |> Change.changeset(%{})
       :error ->
-        change_change(%{
+        Change.changeset(%{
           txn_hash: txn_hash,
           paging_token: paging_token,
           source_address: source_address,
           error: "INVALID_MEMO_TEXT"
         })
+        |> Change.changeset(%{})
     end
   end
   def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => _memo_type}) do
-    change_change(%{
+    Change.changeset(%{
       txn_hash: txn_hash,
       paging_token: paging_token,
       source_address: source_address,
       error: "INVALID_MEMO_TYPE"
     })
+    |> Change.changeset(%{})
   end
 end
