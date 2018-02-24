@@ -5,7 +5,6 @@ defmodule Celestial.Grid.Change do
 
 
   schema "grid_changes" do
-    field :amount, :decimal
     field :col, :integer
     field :error, :string
     field :memo_text, :string
@@ -20,7 +19,7 @@ defmodule Celestial.Grid.Change do
   @doc false
   def changeset(%Change{} = change, attrs) do
     change
-    |> cast(attrs, [:txn_hash, :paging_token, :amount, :source_address, :memo_text, :row, :col, :error])
-    |> validate_required([:txn_hash, :paging_token, :amount, :source_address])
+    |> cast(attrs, [:txn_hash, :paging_token, :source_address, :memo_text, :row, :col, :error])
+    |> validate_required([:txn_hash, :paging_token, :source_address])
   end
 end
