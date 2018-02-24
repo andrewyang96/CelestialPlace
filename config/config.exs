@@ -23,7 +23,9 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Configures Stellar package
-config :stellar, network: :public
+config :stellar,
+  network: (if (Mix.env == :prod), do: :public, else: :test),
+  address: "GCZLX5HCW6PDMBA7YS6HAKNO5NN5VLVLWYK4S32LWC6PMUAWPV2QSTAR"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

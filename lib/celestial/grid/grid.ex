@@ -121,6 +121,20 @@ defmodule Celestial.Grid do
     Repo.all(Change)
   end
 
+  def get_latest_paging_token do
+    import Ecto.Query
+
+    query = from change in "grid_changes",
+      order_by: [desc: change.inserted_at],
+      limit: 1,
+      select: change.paging_token
+
+    case Repo.all(query) do
+      [] -> nil
+      [%Change{paging_token: paging_token}] -> paging_token
+    end
+  end
+
   @doc """
   Gets a single change.
 

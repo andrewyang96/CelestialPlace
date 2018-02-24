@@ -2,7 +2,7 @@ defmodule Celestial.Jobs.TxnUpdater do
   use GenServer
 
   def start_link() do
-    GenServer.start_link(__MODULE__, %{last_txn_hash: nil})
+    GenServer.start_link(__MODULE__, %{})
   end
 
   def init(state) do
@@ -10,14 +10,20 @@ defmodule Celestial.Jobs.TxnUpdater do
     {:ok, state}
   end
 
-  def handle_info(:ping, %{last_txn_hash: last_txn_hash}) do
+  def handle_info(:ping, state) do
     # determine last txn hash
+    latest_paging_token = Celestial.Grid.get_latest_paging_token()
+
     # query txns from horizon
-    # process txns from horizon, update last_txn_hash
-    last_txn_hash_updated = nil
-    IO.puts("work!")
+    {:ok, txns} =
+      Application.get_env(:stellar, :address)
+      |> Stellar.Transactions.all_for_account(cursor: latest_paging_token, limit: 200)
+
+    # process txns
+    IO.inspect(txns)
+
     schedule_work()
-    {:noreply, %{last_txn_hash: last_txn_hash_updated}}
+    {:noreply, state}
   end
 
   defp schedule_work() do
