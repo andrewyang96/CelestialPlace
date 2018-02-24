@@ -15,9 +15,10 @@ defmodule Celestial.Jobs.TxnUpdater do
     latest_paging_token = Celestial.Grid.get_latest_paging_token()
 
     # query txns from horizon
-    {:ok, txns} =
+    {:ok, body} =
       Application.get_env(:stellar, :address)
       |> Stellar.Transactions.all_for_account(cursor: latest_paging_token, limit: 200)
+    txns = body["_embedded"]["records"]
 
     # process txns
     IO.inspect(txns)
