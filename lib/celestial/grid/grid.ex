@@ -215,4 +215,44 @@ defmodule Celestial.Grid do
   def change_change(%Change{} = change) do
     Change.changeset(change, %{})
   end
+
+  @memo_text_regex ~r/^(?<row>[0-9]{1,2})[,;](?<col>[0-9]{1,2})[,;]#?(?<hex_rgb>[0-9a-f]{6}$)/i
+
+  def parse_memo_text(memo_text) do
+    case Regex.named_captures(@memo_text_regex, memo_text) do
+      %{"row" => row, "col" => col, "hex_rgb" => hex_rgb} ->
+        {:ok, {String.to_integer(row), String.to_integer(col), String.downcase(hex_rgb)}}
+      nil ->
+        :error
+    end
+  end
+
+  def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => "text", "memo_text" => memo_text}) do
+    case parse_memo_text(memo_text) do
+      {:ok, {row, col, hex_rgb}} ->
+        change_change(%{
+          txn_hash: txn_hash,
+          paging_token: paging_token,
+          source_address: source_address,
+          row: row,
+          col: col,
+          hex_rgb: hex_rgb
+        })
+      :error ->
+        change_change(%{
+          txn_hash: txn_hash,
+          paging_token: paging_token,
+          source_address: source_address,
+          error: "INVALID_MEMO_TEXT"
+        })
+    end
+  end
+  def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => _memo_type}) do
+    change_change(%{
+      txn_hash: txn_hash,
+      paging_token: paging_token,
+      source_address: source_address,
+      error: "INVALID_MEMO_TYPE"
+    })
+  end
 end
