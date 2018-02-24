@@ -14,6 +14,7 @@ defmodule Celestial.Application do
       supervisor(CelestialWeb.Endpoint, []),
       # Start your own worker by calling: Celestial.Worker.start_link(arg1, arg2, arg3)
       # worker(Celestial.Worker, [arg1, arg2, arg3]),
+      worker(Celestial.Jobs.TxnUpdater, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
