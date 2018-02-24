@@ -18,7 +18,10 @@ defmodule Celestial.Jobs.TxnUpdater do
     {:ok, body} =
       Application.get_env(:stellar, :address)
       |> Stellar.Transactions.all_for_account(cursor: latest_paging_token, limit: 200)
-    txns = body["_embedded"]["records"]
+    txns =
+      body["_embedded"]["records"]
+      |> Enum.reject(
+        fn txn -> txn["source_address"] == Application.get_env(:stellar, :address) end)
 
     # process txns
     IO.inspect(txns)
