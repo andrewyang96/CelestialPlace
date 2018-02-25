@@ -40,13 +40,12 @@ defmodule Celestial.Grid do
     Repo.get_by(Square, row: row, col: col)
   end
 
-  def create_or_update_square_by_coords(row, col, hex_rgb) do
+  def create_or_update_square_by_coords_changeset(row, col, hex_rgb) do
     case get_square_by_coords(row, col) do
       nil -> %Square{row: row, col: col, hex_rgb: hex_rgb}
       square -> square
     end
     |> Square.changeset(%{row: row, col: col, hex_rgb: hex_rgb})
-    |> Repo.insert_or_update
   end
 
   alias Celestial.Grid.Change
@@ -144,6 +143,14 @@ defmodule Celestial.Grid do
   """
   def delete_change(%Change{} = change) do
     Repo.delete(change)
+  end
+
+  def create_change_update_square_txn(changeset, row, col, hex_rgb) do
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(:change, changeset)
+    |> Ecto.Multi.insert_or_update(
+      :square, create_or_update_square_by_coords_changeset(row, col, hex_rgb))
+    |> Repo.transaction()
   end
 
   @memo_text_regex ~r/^(?<row>[0-9]{1,2})[,;](?<col>[0-9]{1,2})[,;]#?(?<hex_rgb>[0-9a-f]{6}$)/i
