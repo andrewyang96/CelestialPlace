@@ -167,32 +167,41 @@ defmodule Celestial.Grid do
   def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => "text", "memo_text" => memo_text}) do
     case parse_memo_text(memo_text) do
       {:ok, {row, col, hex_rgb}} ->
-        Change.changeset(%{
-          txn_hash: txn_hash,
-          paging_token: paging_token,
-          source_address: source_address,
-          row: row,
-          col: col,
-          hex_rgb: hex_rgb
-        })
-        |> Change.changeset(%{})
+        {
+          :valid,
+          %Change{}
+          |> Change.changeset(%{
+            txn_hash: txn_hash,
+            paging_token: paging_token,
+            source_address: source_address,
+            row: row,
+            col: col,
+            hex_rgb: hex_rgb
+          })
+        }
       :error ->
-        Change.changeset(%{
-          txn_hash: txn_hash,
-          paging_token: paging_token,
-          source_address: source_address,
-          error: "INVALID_MEMO_TEXT"
-        })
-        |> Change.changeset(%{})
+        {
+          :invalid,
+          %Change{}
+          |> Change.changeset(%{
+            txn_hash: txn_hash,
+            paging_token: paging_token,
+            source_address: source_address,
+            error: "INVALID_MEMO_TEXT"
+          })
+        }
     end
   end
   def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => _memo_type}) do
-    Change.changeset(%{
-      txn_hash: txn_hash,
-      paging_token: paging_token,
-      source_address: source_address,
-      error: "INVALID_MEMO_TYPE"
-    })
-    |> Change.changeset(%{})
+    {
+      :invalid,
+      %Change{}
+      |> Change.changeset(%{
+        txn_hash: txn_hash,
+        paging_token: paging_token,
+        source_address: source_address,
+        error: "INVALID_MEMO_TYPE"
+      })
+    }
   end
 end

@@ -1,6 +1,8 @@
 defmodule Celestial.Jobs.TxnUpdater do
   use GenServer
 
+  alias Celestial.Grid
+
   def start_link() do
     GenServer.start_link(__MODULE__, %{})
   end
@@ -24,7 +26,15 @@ defmodule Celestial.Jobs.TxnUpdater do
         fn txn -> txn["source_address"] == Application.get_env(:stellar, :address) end)
 
     # process txns
-    IO.inspect(txns)
+    for txn <- txns do
+      case Grid.validate_change(txn) do
+        {:valid, change} ->
+          Grid.create_change_update_square_txn(change, change.row, change.col, change.hex_rgb)
+          broadcast_square_update!(txn)
+        {:invalid, change} ->
+          Celestial.Repo.insert(change)
+      end
+    end
 
     schedule_work()
     {:noreply, state}
@@ -32,5 +42,9 @@ defmodule Celestial.Jobs.TxnUpdater do
 
   defp schedule_work() do
     Process.send_after(self(), :ping, 2_000)
+  end
+
+  defp broadcast_square_update!(%{"row" => row, "col" => col, "hex_rgb" => hex_rgb}) do
+    CelestialWeb.Endpoint.broadcast!("grid", "grid:update", %{"row" => row, "col" => col, "hex_rgb" => hex_rgb})
   end
 end
