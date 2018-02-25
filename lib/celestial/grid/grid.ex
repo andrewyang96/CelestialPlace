@@ -93,58 +93,6 @@ defmodule Celestial.Grid do
   """
   def get_change!(id), do: Repo.get!(Change, id)
 
-  @doc """
-  Creates a change.
-
-  ## Examples
-
-      iex> create_change(%{field: value})
-      {:ok, %Change{}}
-
-      iex> create_change(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_change(attrs \\ %{}) do
-    %Change{}
-    |> Change.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Updates a change.
-
-  ## Examples
-
-      iex> update_change(change, %{field: new_value})
-      {:ok, %Change{}}
-
-      iex> update_change(change, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_change(%Change{} = change, attrs) do
-    change
-    |> Change.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Change.
-
-  ## Examples
-
-      iex> delete_change(change)
-      {:ok, %Change{}}
-
-      iex> delete_change(change)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_change(%Change{} = change) do
-    Repo.delete(change)
-  end
-
   def create_change_update_square_txn(changeset, row, col, hex_rgb) do
     Ecto.Multi.new()
     |> Ecto.Multi.insert(:change, changeset)
