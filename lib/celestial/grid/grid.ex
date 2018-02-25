@@ -73,7 +73,7 @@ defmodule Celestial.Grid do
 
     case Repo.all(query) do
       [] -> nil
-      [%Change{paging_token: paging_token}] -> paging_token
+      [paging_token] -> paging_token
     end
   end
 
