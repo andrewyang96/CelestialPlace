@@ -23,11 +23,11 @@ import "phoenix_html"
 import SVG from "svg.js"
 import svgPanZoom from "svg-pan-zoom"
 
-(function () {
+(() => {
   const gridWidth = 800, gridHeight = 800;
   const draw = SVG('grid').size(800, 800);
 
-  const makeGrid = function (draw, rowSpan, colSpan) {
+  const makeGrid = (draw, rowSpan, colSpan) => {
     const grid = [];
     for (let row = 0; row < 100; row++) {
       grid[row] = [];
@@ -41,7 +41,7 @@ import svgPanZoom from "svg-pan-zoom"
         }.bind(null, row, col));
       }
     }
-    draw.on('mouseleave', function () {
+    draw.on('mouseleave', () => {
       rowSpan.textContent = '-';
       colSpan.textContent = '-';
     });
