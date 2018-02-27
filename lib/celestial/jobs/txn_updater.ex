@@ -29,7 +29,7 @@ defmodule Celestial.Jobs.TxnUpdater do
     for txn <- txns do
       case Grid.validate_change(txn) do
         {:valid, change} ->
-          Grid.create_change_update_square_txn(change, change.row, change.col, change.hex_rgb)
+          Grid.create_change_update_square_txn(change)
           broadcast_square_update!(txn)
         {:invalid, change} ->
           Celestial.Repo.insert(change)

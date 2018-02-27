@@ -93,7 +93,7 @@ defmodule Celestial.Grid do
   """
   def get_change!(id), do: Repo.get!(Change, id)
 
-  def create_change_update_square_txn(changeset, row, col, hex_rgb) do
+  def create_change_update_square_txn(%Ecto.Changeset{changes: %{row: row, col: col, hex_rgb: hex_rgb}} = changeset) do
     Ecto.Multi.new()
     |> Ecto.Multi.insert(:change, changeset)
     |> Ecto.Multi.insert_or_update(
