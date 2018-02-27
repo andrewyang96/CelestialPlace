@@ -42,7 +42,8 @@ defmodule Celestial.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:stellar, "~> 0.2.0"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 3.1"},
+      {:distillery, "~> 1.0.0"}
     ]
   end
 
