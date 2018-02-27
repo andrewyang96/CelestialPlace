@@ -1,7 +1,7 @@
 defmodule CelestialWeb.UserSocket do
   use Phoenix.Socket
 
-  channel "grid", CelestialWeb.RoomChannel
+  channel "grid", CelestialWeb.GridChannel
 
   transport :websocket, Phoenix.Transports.WebSocket
 

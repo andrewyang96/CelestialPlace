@@ -26,8 +26,8 @@ defmodule Celestial.Grid do
   end
 
   defp square_map_to_grid(hex_rgb_map) do
-    for row <- 0..999 do
-      for col <- 0..999 do
+    for row <- 0..99 do
+      for col <- 0..99 do
         case hex_rgb_map[{row, col}] do
           nil -> "000000"
           hex_rgb -> hex_rgb

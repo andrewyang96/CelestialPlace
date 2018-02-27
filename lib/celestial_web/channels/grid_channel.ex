@@ -1,4 +1,4 @@
-defmodule Celestial.GridChannel do
+defmodule CelestialWeb.GridChannel do
   use CelestialWeb, :channel
   alias Celestial.Grid
 
