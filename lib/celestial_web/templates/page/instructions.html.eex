@@ -1,0 +1,43 @@
+<h2>Instructions</h2>
+
+<ol class="flow-text">
+  <li>
+    Open the <a href="https://www.stellar.org/laboratory/#txbuilder?network=public">Transaction Builder</a> in the Stellar Laboratory. Ensure that the network is set to “public” in the top-right.
+  </li>
+  <li>
+    Enter your address in the “Source Account” field.
+  </li>
+  <li>
+    Click on the button that says "Fetch next sequence number for account starting with ..."
+  </li>
+  <li>
+    Set the memo type to "Text".
+  </li>
+  <li>
+    In the memo field, type in the formatted text.
+  </li>
+  <li>
+    Set the operation type to "Payment".
+  </li>
+  <li>
+    Paste <strong>GCZLX5HCW6PDMBA7YS6HAKNO5NN5VLVLWYK4S32LWC6PMUAWPV2QSTAR</strong> into the "Destination" field. You will be sending Lumens to this address.
+  </li>
+  <li>
+    Select the "native" asset.
+  </li>
+  <li>
+    In the "Amount" field, type in any positive number. (I suggest at least 0.001.) You will be sending that many Lumens to this address.
+  </li>
+  <li>
+    If successful, you should see your transaction details. Click on the "Sign In Transaction Signer" button.
+  </li>
+  <li>
+    If you are signing with your private key, copy it into the "Add Signer" field. Otherwise, if you are signing with your Ledger device, click on the "Sign with BIP Path" button and confirm the transaction on your Ledger device.
+  </li>
+  <li>
+    If successful, you should see the signed transaction. Click on "Submit to Post Transaction endpoint".
+  </li>
+  <li>
+    Finally, click the "Submit" button.
+  </li>
+</ol>
