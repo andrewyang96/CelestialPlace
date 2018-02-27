@@ -4,15 +4,15 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 socket.connect()
 
-const createGridSocket = () => {
+const createGridSocket = (callback) => {
   let channel = socket.channel('grid', {});
 
   channel.join()
     .receive('ok', resp => {
-      console.log(resp);
+      callback(null, resp);
     })
     .receive('error', resp => {
-      console.log('Unable to join:', resp);
+      callback(resp, null);
     });
 
   channel.on('grid:update', updateGrid);
