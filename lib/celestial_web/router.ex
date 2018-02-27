@@ -22,6 +22,6 @@ defmodule CelestialWeb.Router do
   scope "/grid", CelestialWeb.Grid do
     pipe_through :api
 
-    resources "/changes", ChangeController
+    # resources "/changes", ChangeController
   end
 end
