@@ -1,2 +1,4 @@
-<div id="grid"></div>
-<p>Mouse over at row <span id="row">-</span>, col <span id="col">-</span></p>
+<div id="grid-container" class="container">
+  <div id="grid"></div>
+  <p>Mouse over at row <span id="row">-</span>, col <span id="col">-</span></p>
+</div>
