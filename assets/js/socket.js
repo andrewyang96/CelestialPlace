@@ -9,17 +9,11 @@ const createGridSocket = (callback) => {
 
   channel.join()
     .receive('ok', resp => {
-      callback(null, resp);
+      callback(null, resp, channel);
     })
     .receive('error', resp => {
       callback(resp, null);
     });
-
-  channel.on('grid:update', updateGrid);
 };
-
-function updateGrid(event) {
-  console.log(event);
-}
 
 window.createGridSocket = createGridSocket;

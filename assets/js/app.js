@@ -33,15 +33,19 @@ import svgPanZoom from "svg-pan-zoom";
     return grid;
   };
 
-  window.createGridSocket((err, resp) => {
+  window.createGridSocket((err, resp, channel) => {
     if (err) return console.log('Error rendering grid:', err);
     const gridColors = resp.grid;
-    const gridArea = makeGrid(draw, gridColors, document.getElementById('row'), document.getElementById('col'));
+    const grid = makeGrid(draw, gridColors, document.getElementById('row'), document.getElementById('col'));
     const panZoomInstance = svgPanZoom('#grid svg', {
       minZoom: 0.5,
       maxZoom: 10,
       zoomScaleSensitivity: 0.1,
       controlIconsEnabled: true
+    });
+    channel.on('grid:update', (event) => {
+      console.log(event);
+      grid[event.row][event.col].square.fill('#' + event.hex_rgb);
     });
   });
 })();
