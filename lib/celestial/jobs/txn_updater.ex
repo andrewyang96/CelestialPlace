@@ -30,7 +30,7 @@ defmodule Celestial.Jobs.TxnUpdater do
       case Grid.validate_change(txn) do
         {:valid, change} ->
           Grid.create_change_update_square_txn(change)
-          broadcast_square_update!(txn)
+          broadcast_square_update!(change)
         {:invalid, change} ->
           Celestial.Repo.insert(change)
       end
@@ -44,7 +44,7 @@ defmodule Celestial.Jobs.TxnUpdater do
     Process.send_after(self(), :ping, 2_000)
   end
 
-  defp broadcast_square_update!(%{"row" => row, "col" => col, "hex_rgb" => hex_rgb}) do
+  defp broadcast_square_update!(%Ecto.Changeset{changes: %{row: row, col: col, hex_rgb: hex_rgb}}) do
     CelestialWeb.Endpoint.broadcast!("grid", "grid:update", %{"row" => row, "col" => col, "hex_rgb" => hex_rgb})
   end
 end
