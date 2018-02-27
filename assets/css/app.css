@@ -1,8 +1,12 @@
 #grid-container {
   text-align: center;
-  margin-top: 5vh;
+  margin: 5vh auto;
 }
 
 #grid svg {
   background-color: black;
+}
+
+footer a {
+  color: lightblue;
 }

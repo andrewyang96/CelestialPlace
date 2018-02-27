@@ -33,8 +33,21 @@
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
+    </div>
 
-    </div> <!-- /container -->
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <h5>Built for the 6th <a href="https://www.stellar.org/lumens/build/">Stellar Build Challenge</a> &#x1F680;&#x1F680;&#x1F680;</h5>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+          <p class="grey-text text-lighten-4">&copy; 2018 <a href="https://andrewyang.xyz/">Andrew Yang</a>. All rights reserved. <a href="https://blog.andrewyang.xyz/donate">Donations are appreciated.</a></p>
+        </div>
+      </div>
+    </footer>
+
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>
