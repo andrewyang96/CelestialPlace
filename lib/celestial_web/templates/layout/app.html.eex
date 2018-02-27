@@ -18,6 +18,11 @@
         <a href="/" class="brand-logo">
           Celestial Place
         </a>
+        <ul class="right">
+          <li>
+            <%= link "How to Participate", to: page_path(@conn, :instructions) %>
+          </li>
+        </ul>
       </div>
     </nav>
 

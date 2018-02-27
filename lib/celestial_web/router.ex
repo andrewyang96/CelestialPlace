@@ -17,11 +17,6 @@ defmodule CelestialWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-  end
-
-  scope "/grid", CelestialWeb.Grid do
-    pipe_through :api
-
-    # resources "/changes", ChangeController
+    get "/instructions", PageController, :instructions
   end
 end
