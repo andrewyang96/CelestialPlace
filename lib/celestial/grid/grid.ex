@@ -112,7 +112,7 @@ defmodule Celestial.Grid do
     end
   end
 
-  def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => "text", "memo_text" => memo_text}) do
+  def validate_change(%{"hash" => txn_hash, "paging_token" => paging_token, "source_account" => source_address, "memo_type" => "text", "memo" => memo_text}) do
     case parse_memo_text(memo_text) do
       {:ok, {row, col, hex_rgb}} ->
         {
