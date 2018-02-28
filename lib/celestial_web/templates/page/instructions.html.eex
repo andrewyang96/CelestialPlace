@@ -20,7 +20,8 @@
       Set the memo type to "Text".
     </li>
     <li>
-      In the memo field, type in the formatted text.
+      <p>In the memo field, type in the formatted text. For example, if you wanted to put the color <span style="color:#c0ffee;background:black;">#c0ffee</span> on the square located at row 20, column 18, you put "20,18,c0ffee" as your memo text.</p>
+      <p>The regex used by the server is <pre>/^[0-9]{1,2}[,;][0-9]{1,2}[,;]#?[0-9a-f]{6}$/i</pre></p>
     </li>
     <img class="responsive-img" src="/images/step2-5.png">
   </div>
