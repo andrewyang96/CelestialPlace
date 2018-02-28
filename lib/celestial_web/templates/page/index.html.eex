@@ -1,4 +1,4 @@
-<div id="grid-container" class="container">
+<div class="container center-align section">
   <div id="grid"></div>
   <p>Mouse over at row <span id="row">-</span>, col <span id="col">-</span></p>
 </div>
