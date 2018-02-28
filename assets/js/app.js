@@ -18,7 +18,7 @@ import svgPanZoom from "svg-pan-zoom";
       grid[row] = [];
       for (let col = 0; col < 100; col++) {
         grid[row][col] = {};
-        grid[row][col].border = draw.rect(9, 9).move(7 * col, 7 * row).fill('white');
+        grid[row][col].border = draw.rect(9, 9).move(7 * col, 7 * row).fill('gray');
         grid[row][col].square = colorFill(draw, row, col, gridColors[row][col]);
         grid[row][col].square.on('mouseover', function (row, col) {
           rowSpan.textContent = row;
